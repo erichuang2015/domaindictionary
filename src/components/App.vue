@@ -33,13 +33,12 @@
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		font-family: 'Titillium Web', sans-serif;
-		color: #8c829b;
+		color: #656269;
 		margin: 0;
 		padding: 0;
-		width: 100%;
-		height: 100%;
-		background: #221d2a;
-		font-size: 18px;
+		overflow: hidden;
+		background: #1c1c1d;
+		font-size: 22px;
 	}
 
 	h1, h2, h3, h4, h5, h6, p, ul, li {
@@ -50,6 +49,7 @@
 	}
 
 	a {
+		float: left;
 		color: #9d7660;
 		text-decoration: none;
 	}
@@ -69,10 +69,10 @@
 		font-weight: normal;
 	}
 
-	.main-viewport {
+	.main-content-port {
 		float: left;
 		padding: 32px;
-		width: 100%;
+		width: calc(100% - 32px);
 	}
 
 
