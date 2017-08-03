@@ -7,10 +7,18 @@
 
 
       <section class="select-tld pad">
-        <select v-model="userSelectedTLD">
+
+        <select v-model="userSelectedTLD" ref="tldSelectRef">
           <option disabled value="">Please select one</option>
           <option v-for="tld in allExistingTLDs" v-bind:value="tld.tld">{{ tld.tld }}</option>
         </select>
+
+
+        <div class="navigation-buttons">
+          <button type="button" name="button" v-on:click="getPrevOptionIndex" v-bind:disabled="isPrevButtonDisabled">Prev</button>
+          <button type="button" name="button" v-on:click="getNextOptionIndex" v-bind:disabled="isNextButtonDisabled">Next</button>
+        </div>
+
       </section>
 
 
@@ -47,14 +55,27 @@ import lotsOfWords                  from "../../assets/words/english-words.json"
 export default {
   data(){
     return {
-      allExistingTLDs: null,
+      allExistingTLDs: [],
       allMatchingDomainNames: [],
+      currentIndex: 0,
       userSelectedTLD: "",
-      testWords: ["asshat", "factor", "maxtor", "cractor", "tractor", "aeroplane"],
       isProcessing: false,
+      isPrevButtonDisabled: false,
+      isNextButtonDisabled: false,
+      newIndex: 1
     }
   },
   methods: {
+    getNextOptionIndex(){
+      this.newIndex = this.$refs.tldSelectRef.selectedIndex + 1;
+      //console.log(this.newIndex);
+      this.updateSelectOption();
+    },
+    getPrevOptionIndex(){
+      this.newIndex = this.$refs.tldSelectRef.selectedIndex - 1;
+      //console.log(this.newIndex);
+      this.updateSelectOption();
+    },
     organiseMatch(){
       if (!this.isProcessing){
         this.isProcessing = true;
@@ -82,6 +103,41 @@ export default {
         // todo = make this a promise
         this.isProcessing = false;
       });
+    },
+    updateSelectOption(){
+      // so other html elements (like <buttons>) can programatically update the model
+      console.log(`wtf| newindex: ${this.newIndex} | currentIndex: ${this.currentIndex}`);
+      if (this.newIndex > 0){
+        console.log("wtf greater than 1");
+        if (this.currentIndex <= this.allExistingTLDs.length){
+
+          let wtf = this.$refs.tldSelectRef[this.newIndex].value;
+          console.log(wtf);
+          this.userSelectedTLD = this.$refs.tldSelectRef[this.newIndex].value;
+
+          this.whichNavButtonToDisable();
+
+        }
+      }
+
+    },
+    whichNavButtonToDisable(){
+      // visually disable the button which would imply you can go too far left...
+
+      console.log("sould get called...");
+      if (this.currentIndex === 1){
+        this.isPrevButtonDisabled = true;
+      }
+      else {
+        this.isPrevButtonDisabled = false;
+      }
+      // ...or right.
+      if (this.currentIndex === this.allExistingTLDs.length){
+        this.isNextButtonDisabled = true;
+      }
+      else {
+        this.isNextButtonDisabled = false;
+      }
     }
   },
   mounted(){
@@ -90,8 +146,16 @@ export default {
   },
   watch: {
     userSelectedTLD(){
+      // on change... reinitialise at []
       this.resetArray();
+      // perform a match
       this.organiseMatch();
+      // see if any buttons need disabling
+      this.currentIndex = this.$refs.tldSelectRef.selectedIndex;
+
+    },
+    currentIndex(){
+      //this.whichNavButtonToDisable();
     }
   }
 }
@@ -129,5 +193,20 @@ export default {
   .parser-output {
     width: 100%;
   }
+
+  .navigation-buttons {
+    margin-top: 64px;
+    width: calc(100% - 64px);
+    float: left;
+  }
+
+  .navigation-buttons button {
+    width: 50%;
+  }
+
+  .navigation-buttons button[disabled=disabled] {
+    opacity: 0.3;
+  }
+
 
 </style>
