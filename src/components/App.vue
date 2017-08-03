@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<logo-triangle></logo-triangle>
 		<router-view class="main-viewport"></router-view>
 	</div>
 </template>
@@ -10,9 +11,13 @@
 	 */
 	import { mapGetters }					from "vuex";
 
+	import Logo 									from "./Logo.vue";
 
 	export default {
 		name: "app",
+		components: {
+			"logo-triangle": Logo
+		},
 		computed: {
 			...mapGetters([
 			])
@@ -70,9 +75,10 @@
 	}
 
 	.main-content-port {
-		float: left;
-		padding: 32px;
-		width: calc(100% - 32px);
+		margin-left: 30%;
+		margin-right: 30%;
+		width: 40%;
+		display: block;
 	}
 
 
@@ -85,12 +91,12 @@
 		font-size: 18px;
 		color: #c8c8c8;
 		float: left;
-		width: calc(100% - 16px);
+		width: 100%;
 		margin-bottom: 16px;
 	}
 
 	input[type="text"]{
-		width: calc(100% - 32px);
+		width: 100%;
 
 	}
 

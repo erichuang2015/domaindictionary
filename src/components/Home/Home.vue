@@ -3,7 +3,19 @@
     <section class="main-content-port">
 
 
-      <h2>Choose your Tld</h2>
+      <section class="intro-text">
+        <h1>DomainDictiona.ry</h1>
+        <h2>Summary</h2>
+        <p>Generate a funky domain name and check it's availability and price.</p>
+        <p>Helpful for when you need to operate in reverse. Thikning of a cool domain hack and then checking its unavailable is a ballache!</p>
+        <h2>Usage</h2>
+        <p>Select a TLD from the dropdown below and cycle through one. You can then query the price and availability.</p>
+        <!--<section class="user-options">
+          <button type="button" name="button">Most popular words</button>
+          <button type="button" name="button">Entire English language</button>
+        </section>-->
+
+      </section>
 
 
       <section class="select-tld pad">
@@ -132,21 +144,24 @@ export default {
   select {
     float:left;
     z-index:10;
-    width:  calc(100% - 64px);
-    font-size: 22px;
+    width:  100%;
+    font-size: 18px;
     padding: 8px;
-    background: rgb(36, 35, 39);
+    background: rgb(31, 31, 33);
     border: none;
-    color: #81788e;
+    color: #585858;
     font-weight: normal;
     outline: none;
+    text-align: center;
+    font-family: 'Titillium Web', sans-serif;
+    width: 100%;
   }
 
   .pad {
     float: left;
     width: 100%;
-    margin-top: 32px;
-    margin-bottom: 32px;
+    margin-top: 16px;
+    margin-bottom: 16px;
   }
 
   .tld-result-item {
@@ -161,8 +176,8 @@ export default {
   }
 
   .navigation-buttons {
-    margin-top: 64px;
-    width: calc(100% - 64px);
+    margin-top: 32px;
+    width: 100%;
     float: left;
   }
 
@@ -172,6 +187,24 @@ export default {
 
   .navigation-buttons button[disabled=disabled] {
     opacity: 0.3;
+  }
+
+  .intro-text {
+  }
+
+  .intro-text h1 {
+    font-size: 2em;
+    margin-bottom: 4px;
+  }
+
+  .intro-text h2{
+    font-size: 0.85em;
+    margin-bottom: 4px;
+  }
+
+  .intro-text p {
+    font-size: 0.7em;
+
   }
 
 
