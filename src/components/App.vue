@@ -36,9 +36,9 @@
 		color: #656269;
 		margin: 0;
 		padding: 0;
-		overflow: hidden;
 		background: #1c1c1d;
 		font-size: 22px;
+		overflow-x: hidden;
 	}
 
 	h1, h2, h3, h4, h5, h6, p, ul, li {
