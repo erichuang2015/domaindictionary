@@ -57,23 +57,26 @@ export default {
     return {
       allExistingTLDs: [],
       allMatchingDomainNames: [],
-      currentIndex: 0,
       userSelectedTLD: "",
       isProcessing: false,
       isPrevButtonDisabled: false,
       isNextButtonDisabled: false,
-      newIndex: 1
+      newIndex: null
     }
   },
   methods: {
     getNextOptionIndex(){
       this.newIndex = this.$refs.tldSelectRef.selectedIndex + 1;
-      //console.log(this.newIndex);
+      if (this.newIndex >= this.allExistingTLDs.length ){
+        this.newIndex = 1;
+      }
       this.updateSelectOption();
     },
     getPrevOptionIndex(){
       this.newIndex = this.$refs.tldSelectRef.selectedIndex - 1;
-      //console.log(this.newIndex);
+      if (this.newIndex <= 0 ){
+        this.newIndex = this.allExistingTLDs.length;
+      }
       this.updateSelectOption();
     },
     organiseMatch(){
@@ -106,38 +109,7 @@ export default {
     },
     updateSelectOption(){
       // so other html elements (like <buttons>) can programatically update the model
-      console.log(`wtf| newindex: ${this.newIndex} | currentIndex: ${this.currentIndex}`);
-      if (this.newIndex > 0){
-        console.log("wtf greater than 1");
-        if (this.currentIndex <= this.allExistingTLDs.length){
-
-          let wtf = this.$refs.tldSelectRef[this.newIndex].value;
-          console.log(wtf);
-          this.userSelectedTLD = this.$refs.tldSelectRef[this.newIndex].value;
-
-          this.whichNavButtonToDisable();
-
-        }
-      }
-
-    },
-    whichNavButtonToDisable(){
-      // visually disable the button which would imply you can go too far left...
-
-      console.log("sould get called...");
-      if (this.currentIndex === 1){
-        this.isPrevButtonDisabled = true;
-      }
-      else {
-        this.isPrevButtonDisabled = false;
-      }
-      // ...or right.
-      if (this.currentIndex === this.allExistingTLDs.length){
-        this.isNextButtonDisabled = true;
-      }
-      else {
-        this.isNextButtonDisabled = false;
-      }
+      this.userSelectedTLD = this.$refs.tldSelectRef[this.newIndex].value;
     }
   },
   mounted(){
@@ -150,12 +122,6 @@ export default {
       this.resetArray();
       // perform a match
       this.organiseMatch();
-      // see if any buttons need disabling
-      this.currentIndex = this.$refs.tldSelectRef.selectedIndex;
-
-    },
-    currentIndex(){
-      //this.whichNavButtonToDisable();
     }
   }
 }
