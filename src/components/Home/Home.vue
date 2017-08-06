@@ -10,12 +10,12 @@
         <p>Helpful for when you need to operate in reverse. Thikning of a cool domain hack and then checking its unavailable is a ballache!</p>
         <h2>Usage</h2>
         <p>Select a TLD from the dropdown below and cycle through one. You can then query the price and availability.</p>
-        <section class="user-options">
+        <!--<section class="user-options">
           <button type="button" name="button">Most popular words</button>
           <button type="button" name="button">Entire English language</button>
           <button type="button" name="button">All words in treasure island</button>
           <button type="button" name="button">Upload your own definition file!!</button>
-        </section>
+        </section>-->
 
       </section>
 
@@ -37,12 +37,20 @@
 
 
       <section class="parser pad" v-if="userSelectedTLD">
-        <span>Selected TLD: {{ userSelectedTLD }}</span>
-        <section class="parser-status pad" v-if="isProcessing">
-          Processing...
-        </section>
-        <section class="parser-output" v-if="!isProcessing">
-          <a href="#" v-for="tldResult in structuredWords[userSelectedTLD]" class="tld-result-item">{{ tldResult }}</a>
+        <section class="parser-output">
+          <button type="button" name="button">Query Whois Availability</button>
+
+
+          <ul class="website-results">
+            <li v-for="tldResult in structuredWords[userSelectedTLD]" class="website-result-item">
+              <span class="website-name">
+                <a href="#"  class="tld-result-item">{{ tldResult }}</a>
+              </span>
+              <span class="website-availability"></span>
+            </li>
+          </ul>
+
+          </ul>
         </section>
       </section>
 
@@ -175,6 +183,16 @@ export default {
   .intro-text p {
     font-size: 0.7em;
 
+  }
+
+  .website-results {
+    list-style: none;
+  }
+
+
+  .website-result-item {
+    width: 100%;
+    float: left;
   }
 
 
