@@ -100,6 +100,9 @@ export default {
     resetArray(){
       this.allMatchingDomainNames = [];
     },
+    runCheckOnAllWords(){
+      console.log("this will be intensive...");
+    },
     searchArrayForMatches(){
       this.lotsOfWords.forEach((word, iteration) => {
         // will return the index if it exists or -1 if not
@@ -127,6 +130,8 @@ export default {
   mounted(){
     this.allExistingTLDs = tlds;
     this.lotsOfWords = lotsOfWords;
+
+    this.runCheckOnAllWords();
   },
   watch: {
     userSelectedTLD(){
