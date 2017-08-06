@@ -10,10 +10,12 @@
         <p>Helpful for when you need to operate in reverse. Thikning of a cool domain hack and then checking its unavailable is a ballache!</p>
         <h2>Usage</h2>
         <p>Select a TLD from the dropdown below and cycle through one. You can then query the price and availability.</p>
-        <!--<section class="user-options">
+        <section class="user-options">
           <button type="button" name="button">Most popular words</button>
           <button type="button" name="button">Entire English language</button>
-        </section>-->
+          <button type="button" name="button">All words in treasure island</button>
+          <button type="button" name="button">Upload your own definition file!!</button>
+        </section>
 
       </section>
 
@@ -22,7 +24,7 @@
 
         <select v-model="userSelectedTLD" ref="tldSelectRef">
           <option disabled value="">Please select one</option>
-          <option v-for="tld in allExistingTLDs" v-bind:value="tld.tld">{{ tld.tld }}</option>
+          <option v-for="tld in allTLDs" v-bind:value="tld">{{ tld }}</option>
         </select>
 
 
@@ -40,15 +42,7 @@
           Processing...
         </section>
         <section class="parser-output" v-if="!isProcessing">
-
-          <section class="has-results" v-if="allMatchingDomainNames.length">
-            <a href="#" v-for="tldResult in allMatchingDomainNames" class="tld-result-item">{{ tldResult }}</a>
-          </section>
-
-          <section class="no-results" v-if="!allMatchingDomainNames.length">
-            Sorreh :(
-          </section>
-
+          <a href="#" v-for="tldResult in structuredWords[userSelectedTLD]" class="tld-result-item">{{ tldResult }}</a>
         </section>
       </section>
 
@@ -59,27 +53,32 @@
 
 <script>
 
-import { mapGetters }               from "vuex";
+import { mapGetters }                   from "vuex";
 
-import tlds                         from "../../assets/tlds/tlds-parsed.csv";
-import lotsOfWords                  from "../../assets/words/english-words.json";
+import structuredWords                  from "../../assets/structuredWords.json";
 
 export default {
   data(){
     return {
-      allExistingTLDs: [],
-      allMatchingDomainNames: [],
+      allTLDs: [],
+      structuredWords: null,
       userSelectedTLD: "",
-      isProcessing: false,
       isPrevButtonDisabled: false,
       isNextButtonDisabled: false,
-      newIndex: null
+      newIndex: null,
     }
   },
   methods: {
+    enumerateAndBuildTLDIndex(){
+      for (let tld in this.structuredWords){
+        if (this.structuredWords[tld].length){
+          this.allTLDs.push(tld);
+        }
+      }
+    },
     getNextOptionIndex(){
       this.newIndex = this.$refs.tldSelectRef.selectedIndex + 1;
-      if (this.newIndex >= this.allExistingTLDs.length ){
+      if (this.newIndex >= this.allTLDs.length ){
         this.newIndex = 1;
       }
       this.updateSelectOption();
@@ -87,40 +86,12 @@ export default {
     getPrevOptionIndex(){
       this.newIndex = this.$refs.tldSelectRef.selectedIndex - 1;
       if (this.newIndex <= 0 ){
-        this.newIndex = this.allExistingTLDs.length;
+        this.newIndex = this.allTLDs.length;
       }
       this.updateSelectOption();
     },
-    organiseMatch(){
-      if (!this.isProcessing){
-        this.isProcessing = true;
-        this.searchArrayForMatches();
-      }
-    },
     resetArray(){
       this.allMatchingDomainNames = [];
-    },
-    runCheckOnAllWords(){
-      console.log("this will be intensive...");
-    },
-    searchArrayForMatches(){
-      this.lotsOfWords.forEach((word, iteration) => {
-        // will return the index if it exists or -1 if not
-        let test = word.indexOf(this.userSelectedTLD);
-        // important... to make a tld hack it needs to go at the end like rome.ro so cant be in the middle or start of the string
-        // this means that the length of the 2 words subtracted must equal the index of the start position
-        let cropPosition = Math.abs(this.userSelectedTLD.length - word.length);
-        // match
-        if (test > 0){
-          if (cropPosition === test){
-            let hostName = word.slice(0, cropPosition);
-            let domainName = `${hostName}.${this.userSelectedTLD}`;
-            this.allMatchingDomainNames.push(domainName);
-          }
-        }
-        // todo = make this a promise
-        this.isProcessing = false;
-      });
     },
     updateSelectOption(){
       // so other html elements (like <buttons>) can programatically update the model
@@ -128,17 +99,11 @@ export default {
     }
   },
   mounted(){
-    this.allExistingTLDs = tlds;
-    this.lotsOfWords = lotsOfWords;
-
-    this.runCheckOnAllWords();
+    this.structuredWords = structuredWords;
   },
   watch: {
-    userSelectedTLD(){
-      // on change... reinitialise at []
-      this.resetArray();
-      // perform a match
-      this.organiseMatch();
+    structuredWords(){
+      this.enumerateAndBuildTLDIndex();
     }
   }
 }
