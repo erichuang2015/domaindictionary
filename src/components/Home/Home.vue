@@ -7,7 +7,7 @@
         <h1>DomainDictiona.ry</h1>
         <h2>Summary</h2>
         <p>Generate a funky domain name and check it's availability and price.</p>
-        <p>Helpful for when you need to operate in reverse. Thikning of a cool domain hack and then checking its unavailable is a ballache!</p>
+        <p>Helpful for when you need to operate in reverse. Thinking of a cool domain hack and then checking its unavailable is a ballache!</p>
         <h2>Usage</h2>
         <p>Select a TLD from the dropdown below and cycle through one. You can then query the price and availability.</p>
         <!--<section class="user-options">
